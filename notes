@@ -1,0 +1,11 @@
+createUser → Registers a new user in the database.
+
+loginUser → Authenticates a user and returns a JWT token.
+
+getUser → Returns the currently logged-in user’s info.
+
+protect → Checks if the user is authenticated (valid JWT).
+
+isAdmin → Allows access only if the user’s role is admin.
+
+isUser → Allows access only if the user’s role is user.
