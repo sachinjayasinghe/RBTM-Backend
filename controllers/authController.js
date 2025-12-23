@@ -18,7 +18,7 @@ export function createUser(req, res) {
 
     user.save()                         //save user to database
         .then(() => {
-            res.json({ message: "User created successfully" });
+            res.json({ message: "User created successfully" }); 
         })
         .catch((err) => {
             console.error(err);
@@ -42,7 +42,7 @@ export function loginUser(req, res) {
                     {
                         id: user._id,
                         name: user.name,
-                        email: user.email,
+                        email: user.email,          //playload data
                         role: user.role
                     },
                     process.env.JWT_SECRET,
