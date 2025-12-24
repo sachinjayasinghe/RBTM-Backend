@@ -13,7 +13,7 @@ export function protect(req, res, next) {  //middleware to protect routes //next
       return res.status(403).json({ message: "Invalid token format" }); //if token format is invalid
     }
 
-    const token = authHeader.split(" ")[1];
+    const token = authHeader.split(" ")[1]; //hello
 
     jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {  //verify token
       if (err) {
