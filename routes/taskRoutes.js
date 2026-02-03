@@ -2,7 +2,7 @@
 import express from 'express';
 import { protect } from '../middleware/authMiddleware.js';
 import { isAdmin, isUser } from '../middleware/roleMiddleware.js';
-import { createTask, getTasks, updateTaskStatus, deleteTask } from '../controllers/taskController.js';
+import { createTask, getTasks, updateTaskStatus, deleteTask, updateTask} from '../controllers/taskController.js';
 
 const router = express.Router();
 
@@ -11,7 +11,7 @@ const router = express.Router();
 // ----------------------
 router.post('/', protect, isAdmin, createTask);       // Create a new task
 router.delete('/:id', protect, isAdmin, deleteTask); // Delete a task
-
+router.put('/:id', protect, isAdmin, updateTask); // Update a task
 // ----------------------
 // Admin & User routes
 // ----------------------

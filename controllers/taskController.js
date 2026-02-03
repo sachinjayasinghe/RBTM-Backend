@@ -94,3 +94,28 @@ export async function getTasks(req, res) {
       return res.status(500).json({ message: "Failed to delete task" });
     }
   } 
+
+  export async function updateTask(req, res) {
+    try {
+      const task = await Task.findById(req.params.id);
+  
+      if (!task) {
+        return res.status(404).json({ message: "Task not found" });
+      }
+  
+      // Update the fields
+      if (req.body.title) task.title = req.body.title;
+      if (req.body.description !== undefined) task.description = req.body.description;
+      if (req.body.status) task.status = req.body.status;
+  
+      await task.save();
+  
+      res.json({
+        message: "Task updated successfully",
+        task: task,
+      });
+    } catch (error) {
+      console.error("Error updating task:", error);
+      return res.status(500).json({ message: "Failed to update task" });
+    }
+  }
