@@ -1,5 +1,6 @@
 // server/controllers/authController.js
 import User from '../models/User.js';
+import Task from '../models/Task.js';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
@@ -70,7 +71,7 @@ export function getUser(req, res) {
     }
 }
 
-// Returns all users in the database (Admin only)
+// Returns users without admins in the database (Admin only)
 export async function getAllUsers(req, res) {
     try {
         // Find all users but exclude password field
@@ -79,5 +80,31 @@ export async function getAllUsers(req, res) {
     } catch (error) {
         console.error("Error fetching users:", error);
         res.status(500).json({ message: "Failed to fetch users" });
+    }
+}
+
+// Deletes a user (Admin only). Cannot delete if user has assigned tasks.
+export async function deleteUser(req, res) {
+    try {
+        const user = await User.findById(req.params.id);
+
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        // Check if user has any tasks assigned
+        const tasksCount = await Task.countDocuments({ assignedTo: req.params.id });
+
+        if (tasksCount > 0) {
+            return res.status(400).json({ 
+                message: "You have to delete tasks assigned to this user before delete the user" 
+            });
+        }
+
+        await User.findByIdAndDelete(req.params.id);
+        res.json({ message: "User deleted successfully" });
+    } catch (error) {
+        console.error("Error deleting user:", error);
+        res.status(500).json({ message: "Failed to delete user" });
     }
 }
