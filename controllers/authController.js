@@ -74,7 +74,7 @@ export function getUser(req, res) {
 export async function getAllUsers(req, res) {
     try {
         // Find all users but exclude password field
-        const users = await User.find().select('-password');
+        const users = await User.find({ role: 'user' }).select('-password');
         res.json(users);
     } catch (error) {
         console.error("Error fetching users:", error);
